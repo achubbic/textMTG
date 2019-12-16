@@ -2,7 +2,10 @@
 #include<stdlib.h>
 #include<string.h>
 #include<iostream>
+#include <unistd.h>
 #include <cstdlib>
+#include <time.h>
+#include <ctime>
 
 using namespace std;
 
@@ -177,18 +180,6 @@ void append(struct List* L, int data){
 // 	return;
 // }
 
-// void deleteFront(List L){
-// 	Node front = getFront(L);
-// 	deleteNode(L, front);
-// 	return;
-// }
-
-// void deleteBack(List L){
-// 	Node back = getBack(L);
-// 	deleteNode(L, back);
-// 	return;
-// }
-
 void deleteNode(struct List* L, struct Node* N){
 	if(N == NULL){
 		return;
@@ -216,12 +207,30 @@ void deleteNode(struct List* L, struct Node* N){
 	}
 }
 
+void deleteFront(struct List* L){
+	struct Node* front = getFront(L);
+	deleteNode(L, front);
+	return;
+}
+
+void deleteBack(struct List* L){
+	struct Node* back = getBack(L);
+	deleteNode(L, back);
+	return;
+}
+
 void printList(struct List* L){
-	int value;
+	int value, toPrint;
 	int size = length(L);
 	struct Node* N = getFront(L);
 	for(int i = 1; i < size; i++){
-		cout << getValue(N) << ", ";
+		toPrint = getValue(N);
+		if(toPrint > 9){
+			cout << toPrint << ", ";
+		}
+		else{
+			cout << toPrint << " , ";
+		}
 		N = N->next;
 	}
 	cout << getValue(N) << "\n";
@@ -232,71 +241,103 @@ void moveToFront(struct List* L, struct Node* N){
 	if(N->prev == NULL){
 		return;
 	}
-	N->next->prev = N->prev;
-	// cout << getValue(N->next->prev) << "\n";
-	N->prev->next = N->next;
-	N->next = L->head;
-	L->head->prev = N;
-	L->head = N;
-	N->prev = NULL;
+	if(N->next == NULL){
+		N->prev->next = NULL;
+		L->tail = N->prev;
+		N->next = L->head;
+		N->prev = NULL;
+		L->head = N;
+	}
+	else{
+		N->next->prev = N->prev;
+		N->prev->next = N->next;
+		N->next = L->head;
+		L->head->prev = N;
+		L->head = N;
+		N->prev = NULL;
+	}
 	return;
 }
 
 
-// void shuffle(struct List* L){
-// 	if(length(L) < 4){
-// 		cout << "ERROR: the deck you are trying to shuffle is too small\n";
-// 		return;
-// 	}
-// 	int twoCards, noCards;
-// 	struct Node* pile1, pile2;
-// 	int counter = 1;
-// 	//shuffle 7-10 times
-// 	int random = rand() % 3 + 1;
-// 	random = random + 7;
+void shuffle(struct List* L){
+	if(length(L) < 4){
+		cout << "ERROR: the deck you are trying to shuffle is too small\n";
+		return;
+	}
+	int twoCards, noCards, counter;
+	struct Node* pile1;
+	struct Node* pile2;
+	//shuffle 7-10 times
+	// time_t tim = time(NULL);
+	// int random = (int)tim;
+	srand(time(0));
+	int random = rand() % 7;
+	random = random + 6;
 
-// 	for(int i = 0; i < random; i++){
-// 		pile1 = getFront(L);
-// 		pile2 = getFront(L);
-// 		while(counter < length(L)/2){
-// 			pile2 = pile2->next;
-// 			counter = counter + 1;
-// 		}
-// 		//pile1 = top card of first half of deck
-// 		//pile2 = first half of second half of deck
-// 		while(pile2 != L->tail){
-// 			twoCards = rand() % 4;
-// 			pile1 = pile1->next;
-// 			moveToFront(L, pile1);
-// 			if(twoCards == 0){
-// 				pile1 = pile1->next;
-// 				moveToFront(L, pile1);
-// 			}
-
-// 			twoCards = rand() % 4;
-// 			pile2 = pile2->next;
-// 			moveToFront(L, pile2);
-// 			if(twoCards == 0){
-// 				pile2 = pile2->next;
-// 				moveToFront(L, pile2->prev);
-// 			}
-// 		}
-// 	}
-// }
+	for(int i = 0; i < random; i++){
+		counter = 1;
+		pile1 = getFront(L);
+		pile2 = getBack(L);
+		// cout << getValue(pile1) << ", " << getValue(pile2) << "\n";
+		while(counter < length(L)/2){
+			pile2 = pile2->prev;
+			counter = counter + 1;
+		}
+		//pile1 = top card of first half of deck
+		//pile2 = first half of second half of deck
+		while(pile2 != L->tail){
+			twoCards = rand() % 4;
+			pile1 = pile1->next;
+			moveToFront(L, pile1->prev);
+			if(twoCards == 0){
+				pile1 = pile1->next;
+				moveToFront(L, pile1->prev);
+			}
+			sleep(0.1);
+			twoCards = rand() % 4;
+			pile2 = pile2->next;
+			moveToFront(L, pile2->prev);
+			// if(twoCards == 0){
+			// 	if(pile2->next != NULL){
+			// 		pile2 = pile2->next;
+			// 		moveToFront(L, pile2->prev);
+			// 	}
+			// }
+			// sleep(0.1);
+		}
+		// twoCards = rand() % 3;
+		// if(twoCards == 0){
+		// 	moveToFront(L,L->tail);
+		// }
+		
+		cout << i << "\n";
+		printList(L);
+	}
+	return;
+}
 
 
 int main(int argc, char const *argv[]){
 	
 	struct List* L = newList();
-	for(int i = 0; i < 7; i++){
+	for(int i = 0; i < 20; i++){
 		append(L, i);
 	}
-	struct Node* N = getBack(L);
-	N = getPrevNode(N);
-	N = getPrevNode(N);
-	cout << getValue(N) << "\n";
-	deleteNode(L, N);
-	printList(L);
+	// struct Node* N;
+	// N = getBack(L);
+	// moveToFront(L,N);
+
+	shuffle(L);
+	sleep(1);
+	cout << "\n";
+	shuffle(L);
+	cout << "\n";
+	sleep(1);
+	shuffle(L);
+	cout << "\n";
+	sleep(1);
+	shuffle(L);
 
 	return 1;
 }

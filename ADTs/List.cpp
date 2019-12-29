@@ -35,29 +35,6 @@ struct List* newList(void){
 	return(L);
 }
 
-
-
-// void clear(List L){
-// 	if(L == NULL){
-// 		cout << "ERROR: tried to clear a NULL list\n";
-// 		return;
-// 	}
-// 	if(L->head == NULL && L->tail == NULL){
-// 		cout << "ERROR: tried to clear a list with no Node Objects\n";
-// 		return;
-// 	}
-// 	while(getFront(L) != NULL){
-// 		deleteFront(L);
-// 	}
-// 	return;
-// }
-
-// void freeList(List* pL){
-// 	clear(*pL);
-// 	free(*pL);
-// 	pL = NULL;
-// }
-
 int length(struct List* L){
 	int size = 0;
 	struct Node* N = L->head;
@@ -143,46 +120,6 @@ void append(struct List* L, int data){
 	}
 }
 
-// void insertBefore(List L, int index, int data){
-// 	int counter = 1;
-// 	int size = length(L);
-// 	Node N = getFront(L);
-// 	if(index > size || index < 0){
-// 		cout << "ERROR: tried to insert a node to an index larger than list\n";
-// 		return;
-// 	}
-// 	while(counter != index){
-// 		N = N->next;
-// 		counter = counter + 1;
-// 	}
-// 	Node temp = newNode(data);
-// 	N->prev->next = temp;
-// 	temp->next = N;
-// 	temp->prev = N->prev;
-// 	N->prev = temp;
-// 	return;
-// }
-
-// void insertAfter(List L, int index, int data){
-// 	int counter = 1;
-// 	int size = length(L);
-// 	Node N = getFront(L);
-// 	if(index > size || index < 0){
-// 		cout << "ERROR: tried to insert a node to an index larger than list\n";
-// 		return;
-// 	}
-// 	while(counter != index){
-// 		N = N->next;
-// 		counter = counter + 1;
-// 	}
-// 	Node temp = newNode(data);
-// 	N->next->prev = temp;
-// 	temp->next = N->next;
-// 	temp->prev = N;
-// 	N->next = temp;
-// 	return;
-// }
-
 void deleteNode(struct List* L, struct Node* N){
 	if(N == NULL){
 		return;
@@ -225,6 +162,7 @@ void deleteBack(struct List* L){
 void printList(struct List* L){
 	int value, toPrint;
 	int size = length(L);
+	// struct Node* N = getBack(L);
 	struct Node* N = getFront(L);
 	for(int i = 1; i < size; i++){
 		toPrint = getValue(N);
@@ -315,22 +253,91 @@ int main(int argc, char const *argv[]){
 		append(L, i);
 	}
 	printList(L);
-	struct Node* N;
-	N = getBack(L);
-	int count = 1;
-	cout << "N = " << N->data << "\n";
-	while(N != getFront(L) && N != NULL){
-		if(N->data == 0){
-			cout << "case! " << N->data << "\n";
-		}
-		printList(L);
-		cout << "N = " << N->data << "\nN->prev = " << N->prev->data << "\nN = N->prev\n";
-		N = N->prev;
-		cout << "N = " << N->data << "\n";
-		cout << "moving " << N->next->data << " to the front\n";
-		moveToFront(L, N->next);
-		count++;
-	}
+	// struct Node* N;
+	// N = getBack(L);
+	// int count = 1;
+	// cout << "N = " << N->data << "\n";
+	// while(N != getFront(L) && N != NULL){
+	// 	if(N->data == 0){
+	// 		cout << "case! " << N->data << "\n";
+	// 	}
+	// 	printList(L);
+	// 	cout << "N = " << N->data << "\nN->prev = " << N->prev->data << "\nN = N->prev\n";
+	// 	N = N->prev;
+	// 	cout << "N = " << N->data << "\n";
+	// 	cout << "moving " << N->next->data << " to the front\n";
+	// 	moveToFront(L, N->next);
+	// 	count++;
+	// }
 
 	return 1;
 }
+
+
+
+
+
+
+
+
+
+// void insertBefore(List L, int index, int data){
+// 	int counter = 1;
+// 	int size = length(L);
+// 	Node N = getFront(L);
+// 	if(index > size || index < 0){
+// 		cout << "ERROR: tried to insert a node to an index larger than list\n";
+// 		return;
+// 	}
+// 	while(counter != index){
+// 		N = N->next;
+// 		counter = counter + 1;
+// 	}
+// 	Node temp = newNode(data);
+// 	N->prev->next = temp;
+// 	temp->next = N;
+// 	temp->prev = N->prev;
+// 	N->prev = temp;
+// 	return;
+// }
+
+// void insertAfter(List L, int index, int data){
+// 	int counter = 1;
+// 	int size = length(L);
+// 	Node N = getFront(L);
+// 	if(index > size || index < 0){
+// 		cout << "ERROR: tried to insert a node to an index larger than list\n";
+// 		return;
+// 	}
+// 	while(counter != index){
+// 		N = N->next;
+// 		counter = counter + 1;
+// 	}
+// 	Node temp = newNode(data);
+// 	N->next->prev = temp;
+// 	temp->next = N->next;
+// 	temp->prev = N;
+// 	N->next = temp;
+// 	return;
+// }
+
+// void clear(List L){
+// 	if(L == NULL){
+// 		cout << "ERROR: tried to clear a NULL list\n";
+// 		return;
+// 	}
+// 	if(L->head == NULL && L->tail == NULL){
+// 		cout << "ERROR: tried to clear a list with no Node Objects\n";
+// 		return;
+// 	}
+// 	while(getFront(L) != NULL){
+// 		deleteFront(L);
+// 	}
+// 	return;
+// }
+
+// void freeList(List* pL){
+// 	clear(*pL);
+// 	free(*pL);
+// 	pL = NULL;
+// }

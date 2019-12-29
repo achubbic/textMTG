@@ -260,48 +260,48 @@ void moveToFront(struct List* L, struct Node* N){
 }
 
 
-// void shuffle(struct List* L){
-// 	if(length(L) < 4){
-// 		cout << "ERROR: the deck you are trying to shuffle is too small\n";
-// 		return;
-// 	}
-// 	int twoCards, noCards, counter;
-// 	struct Node* pile1;
-// 	struct Node* pile2;
+void shuffle(struct List* L){
+	if(length(L) < 4){
+		cout << "ERROR: the deck you are trying to shuffle is too small\n";
+		return;
+	}
+	int twoCards, noCards, counter;
+	struct Node* pile1;
+	struct Node* pile2;
 
-// 	srand(time(0));
-// 	int random = rand() % 7;
-// 	random = random + 6;
+	srand(time(0));
+	int random = rand() % 7;
+	random = random + 6;
 
-// 	for(int i = 0; i < random; i++){
-// 		counter = 1;
-// 		pile1 = getFront(L);
-// 		pile2 = getBack(L);
-// 		while(counter < length(L)/2){
-// 			pile2 = pile2->prev;
-// 			counter = counter + 1;
-// 		}
-// 		//pile1 = top card of first half of deck
-// 		//pile2 = first half of second half of deck
-// 		while(pile2 != L->tail){
-// 			twoCards = rand() % 4;
-// 			pile1 = pile1->next;
-// 			moveToFront(L, pile1->prev);
-// 			if(twoCards == 0){
-// 				pile1 = pile1->next;
-// 				moveToFront(L, pile1->prev);
-// 			}
-// 			sleep(0.1);
-// 			twoCards = rand() % 4;
-// 			pile2 = pile2->next;
-// 			moveToFront(L, pile2->prev);
-// 		}
+	for(int i = 0; i < random; i++){
+		counter = 1;
+		pile1 = getFront(L);
+		pile2 = getBack(L);
+		while(counter < length(L)/2){
+			pile2 = pile2->prev;
+			counter = counter + 1;
+		}
+		//pile1 = top card of first half of deck
+		//pile2 = first half of second half of deck
+		while(pile2 != L->tail){
+			twoCards = rand() % 4;
+			pile1 = pile1->next;
+			moveToFront(L, pile1->prev);
+			if(twoCards == 0){
+				pile1 = pile1->next;
+				moveToFront(L, pile1->prev);
+			}
+			sleep(0.1);
+			twoCards = rand() % 4;
+			pile2 = pile2->next;
+			moveToFront(L, pile2->prev);
+		}
 		
-// 		cout << i << "\n";
-// 		printList(L);
-// 	}
-// 	return;
-// }
+		cout << i << "\n";
+		printList(L);
+	}
+	return;
+}
 
 //common causes of segfault: calling N->prev/next
 //	on front/back of list respectivly
@@ -317,7 +317,11 @@ int main(int argc, char const *argv[]){
 	int count = 1;
 	cout << "N = " << N->data << "\n";
 	while(N != getFront(L) && N != NULL){
+		if(N->data == 0){
+			cout << "case! " << N->data << "\n";
+		}
 		printList(L);
+		cout << "N = " << N->data << "\nN = N->prev\n";
 		N = N->prev;
 		cout << "N = " << N->data << "\n";
 		cout << "moving " << N->next->data << " to the front\n";

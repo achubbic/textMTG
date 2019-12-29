@@ -200,7 +200,8 @@ void moveToFront(struct List* L, struct Node* N){
 	return;
 }
 
-
+// perceived problem: you are calling ->next/prev too much and
+//	seg faulting, other function work fine
 void shuffle(struct List* L){
 	if(length(L) < 4){
 		cout << "ERROR: the deck you are trying to shuffle is too small\n";
@@ -214,32 +215,54 @@ void shuffle(struct List* L){
 	int random = rand() % 7;
 	random = random + 6;
 
-	for(int i = 0; i < random; i++){
-		counter = 1;
-		pile1 = getFront(L);
-		pile2 = getBack(L);
-		while(counter < length(L)/2){
-			pile2 = pile2->prev;
-			counter = counter + 1;
+	// for(int i = 0; i < random; i++){
+	counter = 1;
+	pile1 = getFront(L);
+	pile2 = getBack(L);
+	while(counter < length(L)/2){
+		pile2 = pile2->prev;
+		counter = counter + 1;
+	}
+	//pile1 = top card of first half of deck
+	//pile2 = first half of second half of deck
+	int pile1index = 1;
+	int pile2index = counter + 1;
+	for(int j = 0; j < counter; j++){
+		twoCards = rand() % 4;
+		if(pile1->next == NULL){
+			cout << "pile1->next = NULL, pile1->data = " << pile1->data << "\n";
+			break;
 		}
-		//pile1 = top card of first half of deck
-		//pile2 = first half of second half of deck
-		while(pile2 != L->tail){
-			twoCards = rand() % 4;
+		if(pile2->next == NULL){
+			cout << "pile2->next = NULL, pile2->data = " << pile2->data << "\n";
+			break;
+		}
+		pile1 = pile1->next;
+		moveToFront(L, pile1->prev);
+
+		if(pile1->next == NULL){
+			cout << "pile1->next = NULL, pile1->data = " << pile1->data << "\n";
+			break;
+		}
+		if(twoCards == 0){
 			pile1 = pile1->next;
 			moveToFront(L, pile1->prev);
-			if(twoCards == 0){
-				pile1 = pile1->next;
-				moveToFront(L, pile1->prev);
-			}
-			sleep(0.1);
-			twoCards = rand() % 4;
-			pile2 = pile2->next;
-			moveToFront(L, pile2->prev);
 		}
-		
-		cout << i << "\n";
-		printList(L);
+		sleep(0.1);
+
+		twoCards = rand() % 4;
+		pile2 = pile2->next;
+		moveToFront(L, pile2->prev);
+
+		if(pile2->next == NULL){
+			cout << "pile2->next = NULL, pile2->data = " << pile2->data << "\n";
+			break;
+		}
+		if(twoCards == 0){
+			pile1 = pile1->next;
+			moveToFront(L, pile1->prev);
+		}
+		sleep(0.1);
 	}
 	return;
 }
@@ -253,22 +276,8 @@ int main(int argc, char const *argv[]){
 		append(L, i);
 	}
 	printList(L);
-	// struct Node* N;
-	// N = getBack(L);
-	// int count = 1;
-	// cout << "N = " << N->data << "\n";
-	// while(N != getFront(L) && N != NULL){
-	// 	if(N->data == 0){
-	// 		cout << "case! " << N->data << "\n";
-	// 	}
-	// 	printList(L);
-	// 	cout << "N = " << N->data << "\nN->prev = " << N->prev->data << "\nN = N->prev\n";
-	// 	N = N->prev;
-	// 	cout << "N = " << N->data << "\n";
-	// 	cout << "moving " << N->next->data << " to the front\n";
-	// 	moveToFront(L, N->next);
-	// 	count++;
-	// }
+	shuffle(L);shuffle(L);shuffle(L);shuffle(L);shuffle(L);
+	printList(L);
 
 	return 1;
 }

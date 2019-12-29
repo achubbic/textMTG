@@ -128,16 +128,19 @@ void prepend(struct List* L, int data){
 
 void append(struct List* L, int data){
 	struct Node* N = newNode(data);
+	//if first Node in List
 	if(L->tail == NULL){
 		L->head = N;
 		L->tail = N;
 		return;
 	}
-	L->tail->next = N;
-	N->prev = L->tail;
-	N->next = NULL;
-	L->tail = N;
-	return;
+	else{
+		L->tail->next = N;
+		N->prev = L->tail;
+		N->next = NULL;
+		L->tail = N;
+		return;
+	}
 }
 
 // void insertBefore(List L, int index, int data){
@@ -238,10 +241,10 @@ void printList(struct List* L){
 }
 
 void moveToFront(struct List* L, struct Node* N){
-	if(N->prev == NULL){
+	if(N == L->head){
 		return;
 	}
-	if(N->next == NULL){
+	if(N == L->tail){
 		N->prev->next = NULL;
 		L->tail = N->prev;
 		N->next = L->head;
@@ -321,7 +324,7 @@ int main(int argc, char const *argv[]){
 			cout << "case! " << N->data << "\n";
 		}
 		printList(L);
-		cout << "N = " << N->data << "\nN = N->prev\n";
+		cout << "N = " << N->data << "\nN->prev = " << N->prev->data << "\nN = N->prev\n";
 		N = N->prev;
 		cout << "N = " << N->data << "\n";
 		cout << "moving " << N->next->data << " to the front\n";

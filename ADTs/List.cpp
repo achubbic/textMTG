@@ -215,55 +215,58 @@ void shuffle(struct List* L){
 	int random = rand() % 7;
 	random = random + 6;
 
-	// for(int i = 0; i < random; i++){
-	counter = 1;
-	pile1 = getFront(L);
-	pile2 = getBack(L);
-	while(counter < length(L)/2){
-		pile2 = pile2->prev;
-		counter = counter + 1;
-	}
-	//pile1 = top card of first half of deck
-	//pile2 = first half of second half of deck
-	int pile1index = 1;
-	int pile2index = counter + 1;
-	for(int j = 0; j < counter; j++){
-		twoCards = rand() % 4;
-		if(pile1->next == NULL){
-			cout << "pile1->next = NULL, pile1->data = " << pile1->data << "\n";
-			break;
+	for(int i = 0; i < random; i++){
+		counter = 1;
+		pile1 = getFront(L);
+		pile2 = getBack(L);
+		while(counter < length(L)/2){
+			pile2 = pile2->prev;
+			counter = counter + 1;
 		}
-		if(pile2->next == NULL){
-			cout << "pile2->next = NULL, pile2->data = " << pile2->data << "\n";
-			break;
-		}
-		pile1 = pile1->next;
-		moveToFront(L, pile1->prev);
-
-		if(pile1->next == NULL){
-			cout << "pile1->next = NULL, pile1->data = " << pile1->data << "\n";
-			break;
-		}
-		if(twoCards == 0){
+		//pile1 = top card of first half of deck
+		//pile2 = first half of second half of deck
+		int pile1index = 1;
+		int pile2index = counter + 1;
+		for(int j = 0; j < counter; j++){
+			twoCards = rand() % 4;
+			if(pile1->next == NULL){
+				cout << "pile1->next = NULL, pile1->data = " << pile1->data << "\n";
+				break;
+			}
+			if(pile2->next == NULL){
+				cout << "pile2->next = NULL, pile2->data = " << pile2->data << "\n";
+				break;
+			}
 			pile1 = pile1->next;
 			moveToFront(L, pile1->prev);
-		}
-		sleep(0.1);
 
-		twoCards = rand() % 4;
-		pile2 = pile2->next;
-		moveToFront(L, pile2->prev);
+			if(pile1->next == NULL){
+				cout << "pile1->next = NULL, pile1->data = " << pile1->data << "\n";
+				break;
+			}
+			if(twoCards == 0){
+				pile1 = pile1->next;
+				moveToFront(L, pile1->prev);
+			}
+			sleep(0.1);
 
-		if(pile2->next == NULL){
-			cout << "pile2->next = NULL, pile2->data = " << pile2->data << "\n";
-			break;
+			twoCards = rand() % 4;
+			pile2 = pile2->next;
+			moveToFront(L, pile2->prev);
+
+			if(pile2->next == NULL){
+				cout << "pile2->next = NULL, pile2->data = " << pile2->data << "\n";
+				break;
+			}
+			if(twoCards == 0){
+				pile1 = pile1->next;
+				moveToFront(L, pile1->prev);
+			}
+			sleep(0.1);
 		}
-		if(twoCards == 0){
-			pile1 = pile1->next;
-			moveToFront(L, pile1->prev);
-		}
-		sleep(0.1);
+		// moveToFront(L,L->tail);
 	}
+
 	return;
 }
 
@@ -276,7 +279,7 @@ int main(int argc, char const *argv[]){
 		append(L, i);
 	}
 	printList(L);
-	shuffle(L);shuffle(L);shuffle(L);shuffle(L);shuffle(L);
+	shuffle(L);
 	printList(L);
 
 	return 1;

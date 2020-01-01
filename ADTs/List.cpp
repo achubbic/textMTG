@@ -264,7 +264,9 @@ void shuffle(struct List* L){
 			}
 			sleep(0.1);
 		}
-		// moveToFront(L,L->tail);
+		moveToFront(L,L->tail);
+		cout << "L->head->next = " << L->head->next->data << "\n";
+		printList(L);
 	}
 
 	return;
@@ -280,7 +282,7 @@ int main(int argc, char const *argv[]){
 	}
 	printList(L);
 	shuffle(L);
-	printList(L);
+	// printList(L);
 
 	return 1;
 }

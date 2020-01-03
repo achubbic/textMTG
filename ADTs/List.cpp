@@ -291,6 +291,13 @@ int main(int argc, char const *argv[]){
 		append(L, i);
 	}
 	printList(L);
+	append(L, 7);
+	append(L, 7);
+	append(L, 7);
+	append(L, 7);
+	moveToFront(L, L->tail);
+	moveToFront(L, L->head);
+	shuffle(L);shuffle(L);shuffle(L);
 	shuffle(L);
 	// printList(L);
 
